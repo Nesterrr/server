@@ -343,6 +343,11 @@ export type Logger = {
   fatal (details: object, message: string): void
 }
 
+interface ActionCreator {
+  toString (): string,
+  (...args: any[]): Action
+}
+
 /**
  * Base server class to extend.
  */
@@ -516,6 +521,11 @@ export default class BaseServer {
   type<A extends Action = AnyAction, D extends object = { }> (
     name: A['type'],
     callbacks: ActionCallbacks<A, D>
+  ): void
+
+  type<AC extends ActionCreator, D extends object = { }> (
+    actionCreator: AC,
+    callbacks: ActionCallbacks<ReturnType<AC>, D>
   ): void
 
   /**
